@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.front.introduction.mapper.CommunityIntroductionMapper">
+
+    <resultMap type="CommunityIntroduction" id="CommunityIntroductionResult">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="introduceContent" column="introduce_content"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectCommunityIntroductionVo">
+        select id, title, introduce_content, create_by, create_time, update_by, update_time, remark from community_introduction
+    </sql>
+
+    <select id="selectCommunityIntroductionList" parameterType="CommunityIntroduction"
+            resultMap="CommunityIntroductionResult">
+        <include refid="selectCommunityIntroductionVo"/>
+        <where>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="introduceContent != null  and introduceContent != ''">and introduce_content =
+                #{introduceContent}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCommunityIntroductionById" parameterType="Long" resultMap="CommunityIntroductionResult">
+        <include refid="selectCommunityIntroductionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCommunityIntroduction" parameterType="CommunityIntroduction" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into community_introduction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="introduceContent != null">introduce_content,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="introduceContent != null">#{introduceContent},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCommunityIntroduction" parameterType="CommunityIntroduction">
+        update community_introduction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="introduceContent != null">introduce_content = #{introduceContent},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCommunityIntroductionById" parameterType="Long">
+        delete from community_introduction where id = #{id}
+    </delete>
+
+    <delete id="deleteCommunityIntroductionByIds" parameterType="String">
+        delete from community_introduction where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

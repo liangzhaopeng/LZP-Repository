@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增order item')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-item-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">order id：</label>
+            <div class="col-sm-8">
+                <input name="orderId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">food id：</label>
+            <div class="col-sm-8">
+                <input name="foodId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">food name：</label>
+            <div class="col-sm-8">
+                <input name="foodName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">food number：</label>
+            <div class="col-sm-8">
+                <input name="foodNumber" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">remark：</label>
+            <div class="col-sm-8">
+                <textarea name="remark" class="form-control"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "front/item";
+    $("#form-item-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-item-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

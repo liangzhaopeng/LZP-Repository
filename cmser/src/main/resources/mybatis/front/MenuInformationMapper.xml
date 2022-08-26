@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.front.menu.mapper.MenuInformationMapper">
+
+    <resultMap type="MenuInformation" id="MenuInformationResult">
+        <result property="id" column="id"/>
+        <result property="foodName" column="food_name"/>
+        <result property="foodIntroduce" column="food_introduce"/>
+        <result property="price" column="price"/>
+        <result property="foodImage" column="food_image"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectMenuInformationVo">
+        select id, food_name, food_introduce, price, food_image, create_by, create_time, update_by, update_time, remark from menu_information
+    </sql>
+
+    <select id="selectMenuInformationList" parameterType="MenuInformation" resultMap="MenuInformationResult">
+        <include refid="selectMenuInformationVo"/>
+        <where>
+            <if test="foodName != null  and foodName != ''">and food_name like concat('%', #{foodName}, '%')</if>
+            <if test="foodIntroduce != null  and foodIntroduce != ''">and food_introduce = #{foodIntroduce}</if>
+            <if test="price != null ">and price = #{price}</if>
+            <if test="foodImage != null  and foodImage != ''">and food_image = #{foodImage}</if>
+        </where>
+    </select>
+
+    <select id="selectMenuInformationById" parameterType="Long" resultMap="MenuInformationResult">
+        <include refid="selectMenuInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMenuInformation" parameterType="MenuInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into menu_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="foodName != null">food_name,</if>
+            <if test="foodIntroduce != null">food_introduce,</if>
+            <if test="price != null">price,</if>
+            <if test="foodImage != null">food_image,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="foodName != null">#{foodName},</if>
+            <if test="foodIntroduce != null">#{foodIntroduce},</if>
+            <if test="price != null">#{price},</if>
+            <if test="foodImage != null">#{foodImage},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMenuInformation" parameterType="MenuInformation">
+        update menu_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="foodName != null">food_name = #{foodName},</if>
+            <if test="foodIntroduce != null">food_introduce = #{foodIntroduce},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="foodImage != null">food_image = #{foodImage},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMenuInformationById" parameterType="Long">
+        delete from menu_information where id = #{id}
+    </delete>
+
+    <delete id="deleteMenuInformationByIds" parameterType="String">
+        delete from menu_information where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

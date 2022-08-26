@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.front.hand.mapper.SecondHandMapper">
+
+    <resultMap type="SecondHand" id="SecondHandResult">
+        <result property="id" column="id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsDescribe" column="goods_describe"/>
+        <result property="price" column="price"/>
+        <result property="goodsImageOne" column="goods_image_one"/>
+        <result property="goodsImageTwo" column="goods_image_two"/>
+        <result property="goodsImageThree" column="goods_image_three"/>
+        <result property="goodsImageFour" column="goods_image_four"/>
+        <result property="goodsImageFive" column="goods_image_five"/>
+        <result property="goodsImageSix" column="goods_image_six"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectSecondHandVo">
+        select id, goods_name, goods_describe, price, goods_image_one, goods_image_two,
+        goods_image_three, goods_image_four, goods_image_five, goods_image_six, user_id, user_name, status,
+         create_by, create_time, update_by, update_time, remark from second_hand
+    </sql>
+
+    <select id="selectSecondHandList" parameterType="SecondHand" resultMap="SecondHandResult">
+        <include refid="selectSecondHandVo"/>
+        <where>
+            <if test="goodsName != null  and goodsName != ''">and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="goodsDescribe != null  and goodsDescribe != ''">and goods_describe = #{goodsDescribe}</if>
+            <if test="price != null ">and price = #{price}</if>
+            <if test="goodsImageOne != null  and goodsImageOne != ''">and goods_image_one = #{goodsImageOne}</if>
+            <if test="goodsImageTwo != null  and goodsImageTwo != ''">and goods_image_two = #{goodsImageTwo}</if>
+            <if test="goodsImageThree != null  and goodsImageThree != ''">and goods_image_three = #{goodsImageThree}
+            </if>
+            <if test="goodsImageFour != null  and goodsImageFour != ''">and goods_image_four = #{goodsImageFour}</if>
+            <if test="goodsImageFive != null  and goodsImageFive != ''">and goods_image_five = #{goodsImageFive}</if>
+            <if test="goodsImageSix != null  and goodsImageSix != ''">and goods_image_six = #{goodsImageSix}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''">and user_name = #{userName}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="ids != null and ids.size() > 0 ">
+                and id in
+                <foreach item="id" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSecondHandById" parameterType="Long" resultMap="SecondHandResult">
+        <include refid="selectSecondHandVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSecondHand" parameterType="SecondHand" useGeneratedKeys="true" keyProperty="id">
+        insert into second_hand
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsName != null">goods_name,</if>
+            <if test="goodsDescribe != null">goods_describe,</if>
+            <if test="price != null">price,</if>
+            <if test="goodsImageOne != null">goods_image_one,</if>
+            <if test="goodsImageTwo != null">goods_image_two,</if>
+            <if test="goodsImageThree != null">goods_image_three,</if>
+            <if test="goodsImageFour != null">goods_image_four,</if>
+            <if test="goodsImageFive != null">goods_image_five,</if>
+            <if test="goodsImageSix != null">goods_image_six,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="goodsDescribe != null">#{goodsDescribe},</if>
+            <if test="price != null">#{price},</if>
+            <if test="goodsImageOne != null">#{goodsImageOne},</if>
+            <if test="goodsImageTwo != null">#{goodsImageTwo},</if>
+            <if test="goodsImageThree != null">#{goodsImageThree},</if>
+            <if test="goodsImageFour != null">#{goodsImageFour},</if>
+            <if test="goodsImageFive != null">#{goodsImageFive},</if>
+            <if test="goodsImageSix != null">#{goodsImageSix},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSecondHand" parameterType="SecondHand">
+        update second_hand
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsName != null">goods_name = #{goodsName},</if>
+            <if test="goodsDescribe != null">goods_describe = #{goodsDescribe},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="goodsImageOne != null">goods_image_one = #{goodsImageOne},</if>
+            <if test="goodsImageTwo != null">goods_image_two = #{goodsImageTwo},</if>
+            <if test="goodsImageThree != null">goods_image_three = #{goodsImageThree},</if>
+            <if test="goodsImageFour != null">goods_image_four = #{goodsImageFour},</if>
+            <if test="goodsImageFive != null">goods_image_five = #{goodsImageFive},</if>
+            <if test="goodsImageSix != null">goods_image_six = #{goodsImageSix},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSecondHandById" parameterType="Long">
+        delete from second_hand where id = #{id}
+    </delete>
+
+    <delete id="deleteSecondHandByIds" parameterType="String">
+        delete from second_hand where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

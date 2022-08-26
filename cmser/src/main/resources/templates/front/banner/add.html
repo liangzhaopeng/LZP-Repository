@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('add banner image')"/>
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-banner-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">goods image：</label>
+            <!--<div class="col-sm-8">
+                <textarea name="bannerImageUrl" class="form-control"></textarea>
+            </div>-->
+            <input name="bannerImageUrl" id="bannerImageUrl" type="hidden">
+            <div class="col-sm-8">
+                <input id="selectImage" type="file" name="file" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">remark：</label>
+            <div class="col-sm-8">
+                <textarea name="remark" class="form-control"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "front/banner";
+    var commonPrefix = ctx + "common";
+
+    $("#form-banner-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-banner-add').serialize());
+        }
+    }
+
+    $(function () {
+        initFileInput("selectImage", "bannerImageUrl");
+    });
+
+    /**
+     * 图片上传
+     *
+     * @param ctrlId
+     * @param inputId
+     */
+    function initFileInput(ctrlId, inputId) {
+        var control = $('#' + ctrlId);
+        control.fileinput({
+            // 设置语言
+            language: 'en',
+            // 上传的地址
+            uploadUrl: commonPrefix + "/upload",
+            // 接收的文件后缀
+            allowedFileExtensions: ['avi', 'rm', 'rmvb', 'flv', 'mpg', 'mov', 'mkv', 'mp4', '3gp', 'wmv', 'jpg', 'gif', 'png', 'jpeg', 'mp3', 'wav', 'wma'],
+            // 默认异步上传
+            uploadAsync: false,
+            // 是否显示上传按钮
+            showUpload: true,
+            // 显示移除按钮
+            showRemove: true,
+            // 是否显示预览
+            showPreview: true,
+            // 是否显示标题
+            showCaption: false,
+            // 按钮样式
+            browseClass: "btn btn-primary",
+            // 允许同时上传的最大文件个数
+            maxFileCount: 1,
+            // 单位为kb，如果为0表示不限制文件大小
+            maxFileSize: 1024 * 1024,
+            enctype: 'multipart/form-data',
+            validateInitialCount: true,
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        }).on('filepreupload', function (event, data, previewId, index) {
+            // 上传中
+            console.log('文件正在上传');
+            // 所有文件同步上传成功
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('上传成功');
+            // 打印出返回的json
+            console.log(data.response);
+            // 修改图片路径
+            $("#" + inputId).val(data.response.fileName);
+        }).on('fileerror', function (event, data, msg) {
+            // 一个文件上传失败
+            console.log('上传失败!');
+        })
+    }
+</script>
+</body>
+</html>

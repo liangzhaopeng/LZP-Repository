@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.front.image.mapper.ImageInformationMapper">
+
+    <resultMap type="ImageInformation" id="ImageInformationResult">
+        <result property="id" column="id"/>
+        <result property="imageType" column="image_type"/>
+        <result property="informationId" column="information_id"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectImageInformationVo">
+        select id, image_type, information_id, image_url, create_by, create_time, update_by, update_time, remark from image_information
+    </sql>
+
+    <select id="selectImageInformationList" parameterType="ImageInformation" resultMap="ImageInformationResult">
+        <include refid="selectImageInformationVo"/>
+        <where>
+            <if test="imageType != null ">and image_type = #{imageType}</if>
+            <if test="informationId != null ">and information_id = #{informationId}</if>
+            <if test="imageUrl != null  and imageUrl != ''">and image_url = #{imageUrl}</if>
+        </where>
+    </select>
+
+    <select id="selectImageInformationById" parameterType="Long" resultMap="ImageInformationResult">
+        <include refid="selectImageInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertImageInformation" parameterType="ImageInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into image_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageType != null">image_type,</if>
+            <if test="informationId != null">information_id,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="imageType != null">#{imageType},</if>
+            <if test="informationId != null">#{informationId},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImageInformation" parameterType="ImageInformation">
+        update image_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageType != null">image_type = #{imageType},</if>
+            <if test="informationId != null">information_id = #{informationId},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteImageInformationById" parameterType="Long">
+        delete from image_information where id = #{id}
+    </delete>
+
+    <delete id="deleteImageInformationByIds" parameterType="String">
+        delete from image_information where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

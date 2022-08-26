@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.front.user.mapper.FrontUserMapper">
+
+    <resultMap type="FrontUser" id="FrontUserResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <result property="registrationId" column="registration_id"/>
+    </resultMap>
+
+    <sql id="selectFrontUserVo">
+        select id, name, login_name, password, create_by, create_time, update_by, update_time, remark,registration_id from front_user
+    </sql>
+
+    <select id="selectFrontUserList" parameterType="FrontUser" resultMap="FrontUserResult">
+        <include refid="selectFrontUserVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="loginName != null  and loginName != ''">and login_name like concat('%', #{loginName}, '%')</if>
+            <if test="password != null  and password != ''">and password = #{password}</if>
+
+        </where>
+    </select>
+
+    <select id="selectFrontUserById" parameterType="Long" resultMap="FrontUserResult">
+        <include refid="selectFrontUserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFrontUser" parameterType="FrontUser" useGeneratedKeys="true" keyProperty="id">
+        insert into front_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="loginName != null">login_name,</if>
+            <if test="password != null">password,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="registrationId != null ">registration_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="loginName != null">#{loginName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="registrationId != null ">#{registrationId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFrontUser" parameterType="FrontUser">
+        update front_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="loginName != null">login_name = #{loginName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="registrationId != null ">registration_id =#{registrationId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFrontUserById" parameterType="Long">
+        delete from front_user where id = #{id}
+    </delete>
+
+    <delete id="deleteFrontUserByIds" parameterType="String">
+        delete from front_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
